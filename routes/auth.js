@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 
 
 // The route for a user to Login / Recieve their JWT Token
-router.router.post("/register", async function (req, res, next) {
+router.post("/register", async function (req, res, next) {
     console.log("Register request body:", req.body);
   try {
     const user = req.body;  // <-- Expecting user data directly here
