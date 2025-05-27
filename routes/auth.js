@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
 router.post("/register", async function (req, res, next){
 
     try{
-    const {user} = req.body
+    const user = req.body
 
     // Check if "user" object is provided
     if (!user) {
