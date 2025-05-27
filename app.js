@@ -20,15 +20,14 @@ const messaging = require('./routes/message');
 
 
 const corsOptions = {
-    origin: 'https://kingdom-communit-e-frontend.onrender.com',
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    authorization: ('Content-Type', 'Authorization'),
-    credentials: true,
-    exposedHeaders:( 'Content-Type', 'Authorization')
-}
+  origin: 'https://kingdom-communit-e-frontend.onrender.com',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'Authorization']
+};
 app.use(cors(corsOptions));
 
-app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/auth', userAuth);
 app.use('/posts', posts);

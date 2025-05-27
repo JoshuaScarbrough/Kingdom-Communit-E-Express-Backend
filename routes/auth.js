@@ -30,9 +30,11 @@ router.post("/register", async function (req, res, next){
 
         if(!username){
             // Checks if there is a username
+            console.log("Register request body:", req.body);
             return res.status(400).json({message: "Please enter a Username"})
         }else if(!password){
             // Checks if there is a password
+            console.log("Register request body:", req.body);
             return res.status(400).json({message: "Please enter a Password"})
         }else{
 
@@ -46,7 +48,8 @@ router.post("/register", async function (req, res, next){
 
                     // This makes sure that a user doesn't register with someone elses Username
                     if(!newUser){
-                        return res.json({message: `The username ${username} has already been taken. Sorry try again!!`})
+                        console.log("Register request body:", req.body);
+                        return res.status(400).json({message: `The username ${username} has already been taken. Sorry try again!!`})
                     }
 
                     // const extractedValues = newUser.row.replace(/[()]/g, "").split(',');
@@ -62,9 +65,11 @@ router.post("/register", async function (req, res, next){
         
                     // Token for User
                     const token = createToken(registeredUser)
+                    console.log("Register request body:", req.body);
                     res.status(201).json({message: 'User registered successfully', registeredUser, token});
 
             }else{
+                console.log("Register request body:", req.body);
                 return res.status(400).json({message: "Please enter a valid Address"})
             }
 
