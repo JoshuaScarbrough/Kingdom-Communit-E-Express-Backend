@@ -15,7 +15,7 @@ class User {
     // Function to register a User (Used in auth Route)
     static async register(username, userPassword, userAddress){
 
-        const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_WORK_FACTOR, 10) || 12;
+        const BCRYPT_ROUNDS = parseInt(BCRYPT_WORK_FACTOR, 10) || 12;
 
         // Makes sure there arent duplicate usernames being used in registration
         const duplicateCheck = await db.query(
