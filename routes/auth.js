@@ -18,7 +18,7 @@ router.post("/register", async function (req, res, next){
 
     // Check if "user" object is provided
     if (!user) {
-      return res.json({ message: "Missing user data in request body" });
+      return res.status(400).json({ message: "Missing user data in request body" });
     }
 
     try{
@@ -29,11 +29,10 @@ router.post("/register", async function (req, res, next){
 
         if(!username){
             // Checks if there is a username
-            console.log("we here")
-            return res.json({message: "Please enter a Username"})
+            return res.status(400).json({message: "Please enter a Username"})
         }else if(!password){
             // Checks if there is a password
-            return res.json({message: "Please enter a Password"})
+            return res.status(400).json({message: "Please enter a Password"})
         }else{
 
             // Checks to make sure the address is valid
@@ -64,8 +63,8 @@ router.post("/register", async function (req, res, next){
                     const token = createToken(registeredUser)
                     res.status(201).json({message: 'User registered successfully', registeredUser, token});
 
-                }else{
-                    return res.json({message: "Please enter a valid Address"})
+            }else{
+                return res.status(400).json({message: "Please enter a valid Address"})
             }
 
         }
