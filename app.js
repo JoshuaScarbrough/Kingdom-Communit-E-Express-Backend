@@ -5,8 +5,8 @@ const cors = require("cors");
 
 app.set('trust proxy', 1);
 const corsOptions = {
-  origin: 'https://kingdom-communit-e-frontend.onrender.com', // Your deployed frontend
-  methods: ['GET', 'POST', 'PATCH', 'DELETE']
+  origin: 'https://kingdom-communit-e-frontend.onrender.com' // Your deployed frontend
+  // methods: ['GET', 'POST', 'PATCH', 'DELETE']
   // credentials: true, // Needed to support cookies/authorization headers
   // allowedHeaders: ['Content-Type', 'Authorization'],
   // exposedHeaders: ['Content-Type', 'Authorization']
