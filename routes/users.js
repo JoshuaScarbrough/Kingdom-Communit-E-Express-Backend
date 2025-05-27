@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const { createToken } = require("../helpers/tokens")
 const { SECRET_KEY } = require("../config")
 const User = require("../models/user");
-const { user } = require('pg/lib/defaults');
 
 // Gets one Specific User
 router.post('/', async function getAllUsers (req, res, next){
