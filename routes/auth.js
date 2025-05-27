@@ -62,7 +62,7 @@ router.post("/register", async function (req, res, next) {
   }
 });
 
-post("/login", async function (req, res, next){
+router.post("/login", async function (req, res, next){
 
     // Gets the data from the body
     const {loginUser} = req.body;
