@@ -19,13 +19,16 @@ let DB_URI;
 if (process.env.NODE_ENV === "test"){
     DB_URI = "postgresql://postgres:password@localhost:5432/capstone2_test";
 } else {
-    DB_URI = "postgresql://postgres.mlqzpjcyorxhfiurzirb:password@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+    DB_URI = "postgresql://postgres.mlqzpjcyorxhfiurzirb:password@aws-0-us-east-2.pooler.supabase.com:6543/postgres?sslmode=require"
 }
 
 
 // I set up our database client
 let db = new Client({
-    connectionString: DB_URI
+    connectionString: DB_URI,
+    ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // I changed this to prevent connection leaks in tests
