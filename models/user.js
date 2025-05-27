@@ -27,7 +27,7 @@ class User {
         }
 
         // Used to hash passwords for security
-        const hashedPassword = await bcrypt.hash(userPassword, BCRYPT_WORK_FACTOR);
+        const hashedPassword = await bcrypt.hash(userPassword, BCRYPT_ROUNDS);
 
         if(!hashedPassword){
             console.log("Password didn't hash")
