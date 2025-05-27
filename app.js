@@ -2,9 +2,23 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 
+
+app.set('trust proxy', 1);
+const corsOptions = {
+  origin: 'https://kingdom-communit-e-frontend.onrender.com', // Your deployed frontend
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  credentials: true, // Needed to support cookies/authorization headers
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+
 // Parse requests bodies for JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 
 // Adds all the routes
 const userRoutes = require('./routes/users');
@@ -19,14 +33,14 @@ const userFeed = require('./routes/usersFeed');
 const messaging = require('./routes/message');
 
 
-const corsOptions = {
-  origin: 'https://kingdom-communit-e-frontend.onrender.com',
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['Content-Type', 'Authorization']
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: 'https://kingdom-communit-e-frontend.onrender.com',
+//   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//   credentials: true,
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   exposedHeaders: ['Content-Type', 'Authorization']
+// };
+// app.use(cors(corsOptions));
 
 app.use('/users', userRoutes);
 app.use('/auth', userAuth);
