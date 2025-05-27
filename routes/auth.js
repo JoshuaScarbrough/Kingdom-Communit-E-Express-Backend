@@ -49,14 +49,16 @@ router.post("/register", async function (req, res, next){
                         return res.json({message: `The username ${username} has already been taken. Sorry try again!!`})
                     }
 
-                    const extractedValues = newUser.row.replace(/[()]/g, "").split(',');
+                    // const extractedValues = newUser.row.replace(/[()]/g, "").split(',');
                 
-                    let registeredUser = await db.query(
-                        `SELECT id, username FROM users WHERE username = $1`,
-                        [extractedValues[0]]
-                    )
+                    // let registeredUser = await db.query(
+                    //     `SELECT id, username FROM users WHERE username = $1`,
+                    //     [extractedValues[0]]
+                    // )
                 
-                    registeredUser = registeredUser.rows[0]
+                    // registeredUser = registeredUser.rows[0]
+
+                    const registeredUser = newUser;
         
                     // Token for User
                     const token = createToken(registeredUser)

@@ -42,7 +42,7 @@ class User {
             VALUES
             ($1, $2, $3)
             RETURNING
-            ( username, userAddress)`, 
+            id, username, userAddress`, 
             [username, hashedPassword, userAddress],
         );
 
