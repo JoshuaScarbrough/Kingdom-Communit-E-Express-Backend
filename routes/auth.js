@@ -14,6 +14,7 @@ router.get('/', (req, res, next) => {
 // The route for registering a user
 router.post("/register", async function (req, res, next){
 
+    try{
     const {user} = req.body
 
     // Check if "user" object is provided
@@ -21,7 +22,7 @@ router.post("/register", async function (req, res, next){
       return res.status(400).json({ message: "Missing user data in request body" });
     }
 
-    try{
+    
 
         const username = user.username
         const password = user.userPassword
