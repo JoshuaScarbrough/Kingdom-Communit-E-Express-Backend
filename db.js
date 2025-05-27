@@ -19,7 +19,7 @@ let DB_URI;
 if (process.env.NODE_ENV === "test"){
     DB_URI = "postgresql://postgres:password@localhost:5432/capstone2_test";
 } else {
-    DB_URI = "postgresql://postgres:password@mlqzpjcyorxhfiurzirb.supabase.co:5432/postgres";
+    DB_URI = "postgresql://postgres.mlqzpjcyorxhfiurzirb:JoshuaEmeryScarbrough8114@aws-0-us-east-2.pooler.supabase.com:5432/postgres";
 }
 
 
