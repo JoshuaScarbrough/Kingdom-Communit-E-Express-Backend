@@ -20,7 +20,7 @@ const messaging = require('./routes/message');
 
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'https://kingdom-communit-e-frontend.onrender.com',
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     authorization: ('Content-Type', 'Authorization'),
     credentials: true,
