@@ -1,11 +1,14 @@
 {
   "name": "capstone-project-two-71e6ef16065f4daa82082837ffcc0762",
   "version": "1.0.0",
-  "description": "We have broken down the Capstone Project into easy-to-follow steps. Each step of the capstone contains a link with instructions for that step. You may notice this secondCapstone follows a similar pattern to your first Capstone, however, there are key differences.",
+  "description": "We have broken down the Capstone Project into easy-to-follow steps...",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "start": "node app.js"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "repository": {
     "type": "git",
