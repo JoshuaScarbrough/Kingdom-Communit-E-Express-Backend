@@ -11,81 +11,57 @@ router.get('/', (req, res, next) => {
     res.send("Auth routes are working")
 })
 
-// The route for registering a user
-router.post("/register", async function (req, res, next){
 
-    try{
-    const {user} = req.body
 
-    // Check if "user" object is provided
-    if (!user) {
-        console.log("Register request body:", req.body);
-        console.log(user)
+// The route for a user to Login / Recieve their JWT Token
+router.router.post("/register", async function (req, res, next) {
+  try {
+    const user = req.body;  // <-- Expecting user data directly here
+
+    if (!user || Object.keys(user).length === 0) {
+      console.log("Register request body:", req.body);
       return res.status(400).json({ message: "Missing user data in request body" });
     }
 
-    
+    const { username, userPassword: password, userAddress: address } = user;
 
-        const username = user.username
-        const password = user.userPassword
-        const address = user.userAddress
-
-        if(!username){
-            // Checks if there is a username
-            console.log("Register request body:", req.body);
-            return res.status(400).json({message: "Please enter a Username"})
-        }else if(!password){
-            // Checks if there is a password
-            console.log("Register request body:", req.body);
-            return res.status(400).json({message: "Please enter a Password"})
-        }else{
-
-            // Checks to make sure the address is valid
-            const coordinates = await LatLon.checkAddress(address)
-
-            if(coordinates){
-
-                // Registers the user
-                const newUser = await User.register(username, password, address);
-
-                    // This makes sure that a user doesn't register with someone elses Username
-                    if(!newUser){
-                        console.log("Register request body:", req.body);
-                        return res.status(400).json({message: `The username ${username} has already been taken. Sorry try again!!`})
-                    }
-
-                    // const extractedValues = newUser.row.replace(/[()]/g, "").split(',');
-                
-                    // let registeredUser = await db.query(
-                    //     `SELECT id, username FROM users WHERE username = $1`,
-                    //     [extractedValues[0]]
-                    // )
-                
-                    // registeredUser = registeredUser.rows[0]
-
-                    const registeredUser = newUser;
-        
-                    // Token for User
-                    const token = createToken(registeredUser)
-                    console.log("Register request body:", req.body);
-                    res.status(201).json({message: 'User registered successfully', registeredUser, token});
-
-            }else{
-                console.log("Register request body:", req.body);
-                return res.status(400).json({message: "Please enter a valid Address"})
-            }
-
-        }
-
-
-    }catch (e){
-        return next(e)
+    if (!username) {
+      console.log("Missing username:", req.body);
+      return res.status(400).json({ message: "Please enter a Username" });
     }
 
-})
+    if (!password) {
+      console.log("Missing password:", req.body);
+      return res.status(400).json({ message: "Please enter a Password" });
+    }
 
-// The route for a user to Login / Recieve their JWT Token
-router.post("/login", async function (req, res, next){
+    // Validate address
+    const coordinates = await LatLon.checkAddress(address);
+
+    if (!coordinates) {
+      console.log("Invalid address:", req.body);
+      return res.status(400).json({ message: "Please enter a valid Address" });
+    }
+
+    // Register user
+    const newUser = await User.register(username, password, address);
+
+    if (!newUser) {
+      console.log("Username already taken:", username);
+      return res.status(400).json({ message: `The username ${username} has already been taken. Sorry try again!!` });
+    }
+
+    const registeredUser = newUser;
+    const token = createToken(registeredUser);
+
+    console.log("User registered:", registeredUser);
+    res.status(201).json({ message: "User registered successfully", registeredUser, token });
+  } catch (e) {
+    return next(e);
+  }
+});
+
+post("/login", async function (req, res, next){
 
     // Gets the data from the body
     const {loginUser} = req.body;
