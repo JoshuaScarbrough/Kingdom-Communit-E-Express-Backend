@@ -1,3 +1,4 @@
+// Applications keys used for privacy and security
 const BCRYPT_WORK_FACTOR = 12;
 const SECRET_KEY = process.env.SECRET_KEY || "This-is-a-secret"
 const COORDINATE_API_KEY = process.env.COORDINATE_API_KEY || "67f6b66b04e27418249266bfg8349e0"

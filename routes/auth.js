@@ -15,17 +15,21 @@ router.get('/', (req, res, next) => {
 
 // The route for a user to Login / Recieve their JWT Token
 router.post("/register", async function (req, res, next) {
-    console.log("Register request body:", req.body);
+    
   try {
-    const user = req.body;  // <-- Expecting user data directly here
 
+    // Grabs the user object data from the request body
+    const user = req.body;  
+
+    // Check if user data is present
     if (!user || Object.keys(user).length === 0) {
-      console.log("Register request body:", req.body);
       return res.status(400).json({ message: "Missing user data in request body" });
     }
 
+    // Destructure user data
     const { username, userPassword: password, userAddress: address } = user;
 
+    // Validate required fields
     if (!username) {
       console.log("Missing username:", req.body);
       return res.status(400).json({ message: "Please enter a Username" });
@@ -44,7 +48,7 @@ router.post("/register", async function (req, res, next) {
       return res.status(400).json({ message: "Please enter a valid Address" });
     }
 
-    // Register user
+    // If all the data is valid, register the user
     const newUser = await User.register(username, password, address);
 
     if (!newUser) {
@@ -52,9 +56,11 @@ router.post("/register", async function (req, res, next) {
       return res.status(400).json({ message: `The username ${username} has already been taken. Sorry try again!!` });
     }
 
+    // If registration is successful, create a token for the user
     const registeredUser = newUser;
     const token = createToken(registeredUser);
 
+    // Log the registered user and token for debugging
     console.log("User registered:", registeredUser);
     res.status(201).json({ message: "User registered successfully", registeredUser, token });
   } catch (e) {
@@ -62,20 +68,25 @@ router.post("/register", async function (req, res, next) {
   }
 });
 
+// The route for a user to Login / Recieve their JWT Token
 router.post("/login", async function (req, res, next){
 
-    // Gets the data from the body
+    try {
+
+    // Gets the data from the body. 
     const {loginUser} = req.body;
+
+    // Gets the username and password from the loginUser object
     const username = loginUser.username;
     const password = loginUser.userPassword;
 
-    try{
-        const user = await User.authenticate(username, password);
+      // Uses the authenticate function from the User model to check if the user exists and the password is correct
+      const user = await User.authenticate(username, password);
 
-
-        if(user === undefined){
-            return res.json({message: 'The username / password is incorrect'})
-        }else{
+      // If the user is undefined, it means the username or password is incorrect
+      if(user === undefined){
+        return res.json({message: 'The username / password is incorrect'})
+      }else{
         // Token for User
         const token = createToken(user)
         res.status(200).json({message:'login successful', user, token})

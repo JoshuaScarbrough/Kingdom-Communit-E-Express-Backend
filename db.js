@@ -1,13 +1,10 @@
 /**
- * I set up our database configuration here.
- * 
  * I did a few things to make testing work better:
  * 1. I made it not auto-connect during tests (was causing problems)
  * 2. I added some methods to control connections in our tests
  * 3. I separated the test database from our main one
  * 
  * This handles all our PostgreSQL connections.
- * I made it know whether we're testing or not.
  */
 
 const { Client } = require("pg");

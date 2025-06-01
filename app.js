@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require('express'); // Express framework for Node.js
 const app = express();
-const cors = require("cors");
+const cors = require("cors"); // CORS middleware for handling cross-origin requests. What allows the frontend to interact with an API hosted on a different domain.
 
-
+// Cors configuration
 app.set('trust proxy', 1);
 const corsOptions = {
   origin: 'https://kingdom-communit-e-frontend.onrender.com' // Your deployed frontend
@@ -11,16 +11,13 @@ const corsOptions = {
   // allowedHeaders: ['Content-Type', 'Authorization'],
   // exposedHeaders: ['Content-Type', 'Authorization']
 };
-
 app.use(cors(corsOptions));
 
 // Parse requests bodies for JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-// Adds all the routes
+// Importing routes
 const userRoutes = require('./routes/users');
 const userAuth = require('./routes/auth');
 const posts = require('./routes/posts');
@@ -32,16 +29,7 @@ const likedEvents = require('./routes/likedEvents');
 const userFeed = require('./routes/usersFeed');
 const messaging = require('./routes/message');
 
-
-// const corsOptions = {
-//   origin: 'https://kingdom-communit-e-frontend.onrender.com',
-//   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-//   credentials: true,
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   exposedHeaders: ['Content-Type', 'Authorization']
-// };
-// app.use(cors(corsOptions));
-
+// The paths that are going to be used to access the routes
 app.use('/users', userRoutes);
 app.use('/auth', userAuth);
 app.use('/posts', posts);
@@ -53,12 +41,13 @@ app.use('/likedEvents', likedEvents);
 app.use('/feed', userFeed);
 app.use('/messaging', messaging);
 
-// get request using the get verb
+// get request using the get verb. Making sure the server is running
 app.get('/', (req, res) => {
     console.log('Joshua Scarbrough')
     return res.send('Kingdom Communit-E Homepage!!')
 })
 
+// If the environment is not test, start the server
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, function () {
@@ -66,6 +55,7 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log the error stack for debugging
 

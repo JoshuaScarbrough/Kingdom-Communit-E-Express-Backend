@@ -2,8 +2,12 @@ const db = require('../db.js');
 const User = require("./user.js");
 const Event = require("./events.js");
 const UrgentPost = require("./urgentPosts.js");
-const LatLon = require("./latLon.js")
 
+
+/**
+ * This is the Post model that handles all the post related functionality
+ * It includes functions to get a post, set the number of comments and likes, like and unlike a post, add comments, get comments, get full posts with comments, and get all posts from a user or all users.
+ */
 class Post {
 
     // Function to get a post from the Posts table
@@ -16,6 +20,8 @@ class Post {
         return selectedPost
     }
 
+    // Function to set the number of comments for a post in the Posts table
+    // Accepts the post_id as a parameter
     static async setNumComments(post_id){
 
         // Selects the post 
@@ -30,12 +36,16 @@ class Post {
         )
         commentCheck = commentCheck.rows
 
+        // If statement that checks to see if the number of comments that the post has inside of the posts table is equal to the number of comments in the comments table with the post Id
+        // If there is a difference in the numbers then its time to get the two numbers to match
         if(postNumComments !== commentCheck.length){
 
+            // For loop that loops through the comments and adds one to the postNumComments variable
             for(let i=0; i< commentCheck.length; i++){
                 postNumComments ++
             }
     
+            // Updates the posts table with the new number of comments
             const setNumComments = await db.query(
                 `Update posts 
                 SET numComments = $1
@@ -46,10 +56,11 @@ class Post {
             )
         }
 
-        return(postNumComments)
-        
+        return(postNumComments) 
     }
 
+    // Function to set the number of likes for a post in the Posts table. Similar to setting the number of comments.
+    // Accepts the post_id as a parameter
     static async setNumLikes(post_id){
 
         // Selects the post 
@@ -57,19 +68,23 @@ class Post {
 
         let postNumLikes = post.numlikes
 
-        // Checks to see if their are comments in the database already for the comment
+        // Checks to see if their are likes in the database already for the post
         let likesCheck = await db.query(
             `SELECT * FROM postsLiked WHERE post_id = $1`, 
             [post_id]
         )
         likesCheck = likesCheck.rows
 
+        // If statement that checks to see if the number of likes that the post has inside of the posts table is equal to the number of likes in the postsLiked table with the post Id
+        // If there is a difference in the numbers then its time to get the two numbers to match
         if(postNumLikes !== likesCheck.length){
 
+            // For loop that loops through the likes and adds one to the postNumLikes variable
             for(let i=0; i< likesCheck.length; i++){
                 postNumLikes ++
             }
     
+            // Updates the posts table with the new number of likes
             const setNumLikes = await db.query(
                 `Update posts 
                 SET numLikes = $1
@@ -103,6 +118,7 @@ class Post {
             [user_id, post_id]
         )
 
+        // If the like was successful, it updates the number of likes on the post
         if(like){
 
             numLikes = numLikes + 1;
@@ -139,6 +155,7 @@ class Post {
         )
         unlike;
 
+        // If the unlike was successful, it updates the number of likes on the post
         if(unlike){
             postLikes = postLikes - 1;
 
@@ -217,13 +234,10 @@ class Post {
 
         const post = await Post.getPost(post_id)
 
-        // Sets the NumLikes and NumComments
-        const numComments = await Post.setNumComments(post_id)
-        let numLikes = await Post.setNumLikes(post_id)
-
         const comments = await Post.getComments(post_id)
         const allComments = comments.comments
 
+        // Creates an object that contains the post and its comments
         if(post){
             const postsAndComments = {
                 post: post,
@@ -250,8 +264,11 @@ class Post {
         )
         allPosts = allPosts.rows
 
+        // This variable will hold all of the ids from the post of a user inside of an array
         const ids = allPosts.map(post => post.id)
 
+        // Maps over the array of ids and runs the function to ger the full post and its comments for each id.
+        // This is then put inside of an array which is the variable fullPost
         const fullPost = await Promise.all(ids.map(async (id) => await Post.getFullPost(id)))
 
         return fullPost
